@@ -1,8 +1,10 @@
 import request from '@/utils/request'
 
+const BASE_URL = 'http://localhost:8000/api'
+
 export function login(data) {
   return request({
-    url: '/vue-admin-template/user/login',
+    url: `${BASE_URL}/auth/token/`,
     method: 'post',
     data
   })
@@ -10,7 +12,7 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
+    url: `${BASE_URL}/auth/user/info`,
     method: 'get',
     params: { token }
   })
