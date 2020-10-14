@@ -4,9 +4,11 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <el-input
-            placeholder="请输入店铺名"
+            placeholder="输入信息回车进行搜索"
             suffix-icon="el-icon-search"
-            v-model="searchInfo">
+            v-model="searchInfo"
+            @keyup.enter.native="handleSearch()"
+          >
           </el-input>
         </el-col>
         <el-col :span="6">
@@ -35,7 +37,7 @@
         </el-table-column>
         <el-table-column
           prop="shopId"
-          label="关联店铺名">
+          label="关联店铺ID">
         </el-table-column>
         <el-table-column
           prop="status"
@@ -102,6 +104,20 @@
         <el-button type="primary" @click="doUpdateAuthUserList()">确 定</el-button>
        </span>
     </el-dialog>
+
+    <div class="pagination">
+      <el-pagination
+        layout="prev, pager, next, jumper"
+        :page-size="pagination.pageSize"
+        :page-sizes="[10, 20, 50, 100]"
+        :total="pagination.total"
+        :current-page="pagination.page"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -123,6 +139,11 @@ export default {
   data() {
     return {
       userAuthVisible: false,
+      pagination: {
+        pageSize: 10,
+        total: 0,
+        page: 1
+      },
       searchInfo: '',
       dialogVisible: false,
       isCreating: true,
@@ -194,8 +215,16 @@ export default {
     fetchData() {
       this.storeList = []
       this.listLoading = true
-      getStoreList().then(res => {
-        res.value.map(item => {
+      const params = {
+        page_size: this.pagination.pageSize,
+        page: this.pagination.page
+      }
+      if (this.searchInfo) {
+        params.search = this.searchInfo
+      }
+      getStoreList(params).then(res => {
+        this.pagination.total = res.value.count
+        res.value.results.map(item => {
           this.storeList.push({
             id: item.id,
             name: item.name,
@@ -275,7 +304,7 @@ export default {
     },
     fetchUserList() {
       getUserList().then(res => {
-        res.value.map(item => {
+        res.value.results.map(item => {
           this.userList.push({
             id: item.id,
             username: item.username
@@ -300,6 +329,18 @@ export default {
       }).finally(() => {
         this.userAuthVisible = false
       })
+    },
+    handleSizeChange(size) {
+      this.pagination.pageSize = size
+      this.pagination.page = 1
+      this.fetchData()
+    },
+    handleCurrentChange(page) {
+      this.pagination.page = page
+      this.fetchData()
+    },
+    handleSearch() {
+      this.fetchData()
     }
   }
 }
@@ -314,6 +355,11 @@ export default {
   &-text {
     font-size: 30px;
     line-height: 46px;
+  }
+  .pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

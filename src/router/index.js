@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: '/store-manager',
       name: '店铺管理',
       component: () => import('@/views/storeManager/index'),
-      meta: { title: '店铺管理', icon: 'dashboard', role: ['admin'] }
+      meta: { title: '店铺管理', icon: 'shop', role: ['admin'] }
     }]
   },
   {
@@ -60,9 +60,9 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'UserManager',
         component: () => import('@/views/userManager/index'),
-        meta: { title: '人员管理', icon: 'form', role: ['admin'] }
+        meta: { title: '人员管理', icon: 'users', role: ['admin'] }
       }
     ]
   },

@@ -25,17 +25,19 @@ export function logout() {
   })
 }
 
-export function getUserList() {
+export function getUserList(params) {
   return request({
     url: BASE_URL + '/auth/users/',
-    method: 'get'
+    method: 'get',
+    params: params
   })
 }
 
-export function createUser(userInfo) {
+export function createUser(data) {
   return request({
     url: BASE_URL + '/auth/users/',
-    method: 'post'
+    method: 'post',
+    data
   })
 }
 
@@ -46,10 +48,10 @@ export function deleteUser(userId) {
   })
 }
 
-export function updateUser(userId, userInfo) {
+export function updateUser(userId, data) {
   return request({
     url: BASE_URL + `/auth/users/${userId}/`,
     method: 'put',
-    userInfo
+    data
   })
 }

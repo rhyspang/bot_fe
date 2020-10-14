@@ -10,10 +10,11 @@ export function createStore(data) {
   })
 }
 
-export function getStoreList() {
+export function getStoreList(params) {
   return request({
     url: `${BASE_URL}`,
-    method: 'get'
+    method: 'get',
+    params: params
   })
 }
 
