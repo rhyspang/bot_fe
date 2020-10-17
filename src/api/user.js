@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const BASE_URL = 'http://localhost:8000/api'
+const BASE_URL = ''
 
 export function login(data) {
   return request({
@@ -20,7 +20,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/vue-admin-template/user/logout',
+    url: `${BASE_URL}/auth/user/logout/`,
     method: 'post'
   })
 }

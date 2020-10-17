@@ -45,15 +45,49 @@ export const constantRoutes = [
 
   {
     path: '/',
+    redirect: '/store-manager/list',
+    name: '店铺管理',
     component: Layout,
-    redirect: '/store-manager',
-    children: [{
-      path: '/store-manager',
-      name: '店铺管理',
-      component: () => import('@/views/storeManager/index'),
-      meta: { title: '店铺管理', icon: 'shop', role: ['admin'] }
-    }]
+    children: [
+      {
+        path: '/store-manager/list',
+        name: '店铺列表',
+        component: () => import('@/views/storeManager/index'),
+        meta: { title: '店铺管理', icon: 'shop', role: ['admin', 'editor'] }
+      },
+      {
+        name: '知识点',
+        path: '/store-manager/:knowledgeBaseId(\\d+)/knowledge',
+        component: () => import('@/views/knowledge/knowledgeList'),
+        meta: { title: '知识点' },
+        hidden: true
+      }
+    ]
   },
+  // {
+  //   path: '/store-manager',
+  //   name: '店铺管理',
+  //   component: Layout,
+  //   redirect: '/store-manager/list',
+  //   // component: () => import('@/views/storeManager/index'),
+  //   meta: { title: '店铺管理', icon: 'shop', role: ['admin', 'editor'], activeMenu: '/store-manager/list' },
+  //   children: [
+  //     {
+  //       path: '/store-manager/list',
+  //       name: '店铺列表',
+  //       component: () => import('@/views/storeManager/index'),
+  //       meta: { title: '店铺列表', icon: 'shop', role: ['admin', 'editor'], activeMenu: '/store-manager/list' },
+  //       hidden: true
+  //     },
+  //     {
+  //       name: '知识点',
+  //       path: '/store-manager/:id(\\d+)/knowledge',
+  //       component: () => import('@/views/knowledge/knowledgeList'),
+  //       meta: { title: '知识点' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
   {
     path: '/user-manager',
     component: Layout,

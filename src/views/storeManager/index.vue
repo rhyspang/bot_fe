@@ -53,7 +53,7 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button type="text">详情</el-button>
+            <el-button type="text" @click="$router.push(`/store-manager/${scope.row.id}/knowledge`)">详情</el-button>
             <el-button type="text" @click="handleEditAuth(scope.$index)">权限</el-button>
             <el-button type="text" @click="editStore(scope.$index)">编辑</el-button>
             <el-button type="text" @click="deleteStore(scope.row.id)">删除</el-button>

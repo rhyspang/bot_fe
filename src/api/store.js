@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-const BASE_URL = 'http://localhost:8000/api/knowledge/knowledge_base/'
+const BASE_URL = '/knowledge/knowledge_base/'
 
 export function createStore(data) {
   return request({

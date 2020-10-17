@@ -28,6 +28,9 @@ const mutations = {
   },
   SET_USER_ID: (state, userId) => {
     state.userId = userId
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   }
 }
 
@@ -59,9 +62,16 @@ const actions = {
         if (!value.username) {
           return reject('Verification failed, please Login again.')
         }
+        let roles = []
+        if (value.is_staff) {
+          roles = ['admin', 'editor']
+        } else {
+          roles = ['editor']
+        }
 
         commit('SET_NAME', value.username)
         commit('SET_USER_ID', value.id)
+        commit('SET_ROLES', roles)
         // commit('SET_AVATAR', avatar)
         resolve(response)
       }).catch(error => {
