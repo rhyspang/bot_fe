@@ -12,7 +12,7 @@
           </el-input>
         </el-col>
         <el-col :span="6">
-          <el-button type="primary" @click="handleCreating">+新增店铺</el-button>
+          <el-button v-if="isAdmin" type="primary" @click="handleCreating">+新增店铺</el-button>
         </el-col>
       </el-row>
 
@@ -54,9 +54,9 @@
           align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="$router.push(`/store-manager/${scope.row.id}/knowledge`)">详情</el-button>
-            <el-button type="text" @click="handleEditAuth(scope.$index)">权限</el-button>
-            <el-button type="text" @click="editStore(scope.$index)">编辑</el-button>
-            <el-button type="text" @click="deleteStore(scope.row.id)">删除</el-button>
+            <el-button v-if="isAdmin" type="text" @click="handleEditAuth(scope.$index)">权限</el-button>
+            <el-button v-if="isAdmin" type="text" @click="editStore(scope.$index)">编辑</el-button>
+            <el-button v-if="isAdmin" type="text" @click="deleteStore(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -204,8 +204,12 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'userId'
-    ])
+      'userId',
+      'roles'
+    ]),
+    isAdmin() {
+      return this.roles.includes('admin')
+    }
   },
   created() {
     this.fetchData()

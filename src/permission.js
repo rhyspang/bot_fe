@@ -26,15 +26,27 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasGetUserInfo = store.getters.name
-      if (hasGetUserInfo) {
+      // determine whether the user has obtained his permission roles through getInfo
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      console.log('hasRoles: ', hasRoles)
+      // debugger
+      if (hasRoles) {
         next()
       } else {
+        console.log('else')
         try {
           // get user info
-          await store.dispatch('user/getInfo')
-
-          next()
+          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          const { value } = await store.dispatch('user/getInfo')
+          // generate accessible routes map based on roles
+          console.log('111 roles: ', value)
+          const accessRoutes = await store.dispatch('permission/generateRoutes', value.roles)
+          // dynamically add accessible routes
+          router.addRoutes(accessRoutes)
+          console.log('in else: ', accessRoutes)
+          // hack method to ensure that addRoutes is complete
+          // set the replace: true, so the navigation will not leave a history record
+          next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')

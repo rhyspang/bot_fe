@@ -53,126 +53,36 @@ export const constantRoutes = [
         path: '/store-manager/list',
         name: '店铺列表',
         component: () => import('@/views/storeManager/index'),
-        meta: { title: '店铺管理', icon: 'shop', role: ['admin', 'editor'] }
+        meta: { title: '店铺管理', icon: 'shop', roles: ['admin', 'editor'] }
       },
       {
         name: '知识点',
         path: '/store-manager/:knowledgeBaseId(\\d+)/knowledge',
         component: () => import('@/views/knowledge/knowledgeList'),
-        meta: { title: '知识点' },
+        meta: { title: '知识点', activeMenu: '/store-manager/list' },
         hidden: true
       }
     ]
   },
-  // {
-  //   path: '/store-manager',
-  //   name: '店铺管理',
-  //   component: Layout,
-  //   redirect: '/store-manager/list',
-  //   // component: () => import('@/views/storeManager/index'),
-  //   meta: { title: '店铺管理', icon: 'shop', role: ['admin', 'editor'], activeMenu: '/store-manager/list' },
-  //   children: [
-  //     {
-  //       path: '/store-manager/list',
-  //       name: '店铺列表',
-  //       component: () => import('@/views/storeManager/index'),
-  //       meta: { title: '店铺列表', icon: 'shop', role: ['admin', 'editor'], activeMenu: '/store-manager/list' },
-  //       hidden: true
-  //     },
-  //     {
-  //       name: '知识点',
-  //       path: '/store-manager/:id(\\d+)/knowledge',
-  //       component: () => import('@/views/knowledge/knowledgeList'),
-  //       meta: { title: '知识点' },
-  //       hidden: true
-  //     }
-  //   ]
-  // },
+
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRoutes = [
   {
     path: '/user-manager',
     component: Layout,
+    meta: { roles: ['admin'] },
     children: [
       {
         path: 'index',
         name: 'UserManager',
         component: () => import('@/views/userManager/index'),
-        meta: { title: '人员管理', icon: 'users', role: ['admin'] }
+        meta: { title: '人员管理', icon: 'users', roles: ['admin'] }
       }
     ]
-  },
-
-  // {
-  //   path: '/nested',
-  //   component: Layout,
-  //   redirect: '/nested/menu1',
-  //   name: 'Nested',
-  //   meta: {
-  //     title: 'Nested',
-  //     icon: 'nested'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'menu1',
-  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
-  //       name: 'Menu1',
-  //       meta: { title: 'Menu1' },
-  //       children: [
-  //         {
-  //           path: 'menu1-1',
-  //           component: () => import('@/views/nested/menu1/menu1-1'),
-  //           name: 'Menu1-1',
-  //           meta: { title: 'Menu1-1' }
-  //         },
-  //         {
-  //           path: 'menu1-2',
-  //           component: () => import('@/views/nested/menu1/menu1-2'),
-  //           name: 'Menu1-2',
-  //           meta: { title: 'Menu1-2' },
-  //           children: [
-  //             {
-  //               path: 'menu1-2-1',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-  //               name: 'Menu1-2-1',
-  //               meta: { title: 'Menu1-2-1' }
-  //             },
-  //             {
-  //               path: 'menu1-2-2',
-  //               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-  //               name: 'Menu1-2-2',
-  //               meta: { title: 'Menu1-2-2' }
-  //             }
-  //           ]
-  //         },
-  //         {
-  //           path: 'menu1-3',
-  //           component: () => import('@/views/nested/menu1/menu1-3'),
-  //           name: 'Menu1-3',
-  //           meta: { title: 'Menu1-3' }
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: 'menu2',
-  //       component: () => import('@/views/nested/menu2/index'),
-  //       name: 'Menu2',
-  //       meta: { title: 'menu2' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-  //       meta: { title: 'External Link', icon: 'link' }
-  //     }
-  //   ]
-  // },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 const createRouter = () => new Router({

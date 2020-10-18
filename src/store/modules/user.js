@@ -7,7 +7,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    userId: ''
+    userId: '',
+    roles: []
   }
 }
 
@@ -68,10 +69,11 @@ const actions = {
         } else {
           roles = ['editor']
         }
-
+        value.roles = roles
         commit('SET_NAME', value.username)
         commit('SET_USER_ID', value.id)
         commit('SET_ROLES', roles)
+        console.log('roles', roles)
         // commit('SET_AVATAR', avatar)
         resolve(response)
       }).catch(error => {
