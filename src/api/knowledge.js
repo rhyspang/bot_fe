@@ -32,3 +32,20 @@ export function deleteKnowledge(knowledgeBaseId, knowledgeItemId) {
     method: 'delete'
   })
 }
+
+export function exportCsv(knowledgeBaseId) {
+  return request({
+    url: BASE_URL + `/${knowledgeBaseId}/knowledge_item/export_csv/`,
+    method: 'get'
+  })
+}
+
+export function importCsv(knowledgeBaseId, data) {
+  console.log(knowledgeBaseId, data)
+  return request({
+    url: BASE_URL + `/${knowledgeBaseId}/knowledge_item/import_csv/`,
+    method: 'post',
+    headers: { 'Content-Type': 'multipart/form-data' },
+    data
+  })
+}

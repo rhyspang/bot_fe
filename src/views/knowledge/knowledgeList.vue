@@ -11,8 +11,18 @@
           >
           </el-input>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="3">
           <el-button type="primary" @click="handleCreating">+新增问题</el-button>
+        </el-col>
+        <el-col :span="3">
+
+          <input ref="uploads" type="file" accept=".csv" hidden @change="uploadConfig">
+          <el-button type="primary" @click="$refs.uploads.click()">导入知识点</el-button>
+<!--            <div slot="tip" class="el-upload__tip">只能上传csv文件，且不超过10MB</div>-->
+        </el-col>
+        <el-col :span="3">
+          <el-button type="primary" @click="downloadsCsv">导出知识点</el-button>
+            <!--            <div slot="tip" class="el-upload__tip">只能上传csv文件，且不超过10MB</div>-->
         </el-col>
       </el-row>
 
@@ -72,7 +82,7 @@
       <el-form ref="knowledgeForm" :model="knowledgeFormData" :rules="knowledgeFormDataRules" label-width="100px">
         <el-form-item label="标准问" prop="question">
           <el-row>
-            <el-col span="20">
+            <el-col :span="20">
               <el-input v-model="knowledgeFormData.question" />
             </el-col>
           </el-row>
@@ -80,7 +90,7 @@
         <el-form-item label="答案类型" prop="scope">
 <!--          <el-input v-model="knowledgeFormData.scope"></el-input>-->
           <el-row>
-            <el-col span="20">
+            <el-col :span="20">
               <el-select
                 v-model="knowledgeFormData.scope"
                 placeholder="请选择类型"
@@ -179,7 +189,7 @@
 </template>
 
 <script>
-import { createKnowledge, deleteKnowledge, getKnowledgeList, updateKnowledge } from '@/api/knowledge'
+import { createKnowledge, deleteKnowledge, getKnowledgeList, updateKnowledge, exportCsv, importCsv } from '@/api/knowledge'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
@@ -231,7 +241,8 @@ export default {
           }
         ]
       },
-      knowledgeList: []
+      knowledgeList: [],
+      fileList: []
     }
   },
   computed: {
@@ -369,6 +380,34 @@ export default {
         return
       }
       this.knowledgeFormData[filedName].push('')
+    },
+    fileChange(file, fileList) {
+      // 这是关键一句
+      console.log(fileList)
+      if (fileList.length > 0) {
+        this.fileList = [fileList[fileList.length - 1]]
+      }
+    },
+    uploadConfig(e) {
+      if (e.target.files.length === 0) {
+        return
+      }
+      const formData = new FormData()
+      formData.append('file', e.target.files[0])
+      importCsv(this.knowledgeBaseId, formData).then((res) => {
+        console.log(res)
+        if (res.status === 10001) {
+          this.$message.error(res.error)
+        } else {
+          this.fetchKnowledgeList()
+        }
+      }).catch(e => {
+        console.log(e)
+        this.$message.error('格式错误')
+      })
+    },
+    downloadsCsv() {
+      exportCsv()
     }
   }
 }

@@ -56,7 +56,7 @@
             <el-button type="text" @click="$router.push(`/store-manager/${scope.row.id}/knowledge`)">详情</el-button>
             <el-button v-if="isAdmin" type="text" @click="handleEditAuth(scope.$index)">权限</el-button>
             <el-button v-if="isAdmin" type="text" @click="editStore(scope.$index)">编辑</el-button>
-            <el-button v-if="isAdmin" type="text" @click="deleteStore(scope.row.id)">删除</el-button>
+            <el-button v-if="isAdmin" type="text" @click="deleteStore(scope.$index)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -280,13 +280,28 @@ export default {
       })
       this.dialogVisible = false
     },
-    deleteStore(storeId) {
-      this.$confirm('此操作将永久删除该店铺, 是否继续?', '提示', {
+    deleteStore(storeIndex) {
+      // this.$confirm('此操作将永久删除该店铺, 是否继续?', '提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
+      //   deleteStore(this.storeList[storeIndex].id).then(() => {
+      //     this.fetchData()
+      //   }).catch(err => {
+      //     this.$message.error('删除失败')
+      //     console.log(err)
+      //   })
+      // })
+
+      this.$prompt('此操作将永久删除该店铺，请输入店铺名确认删除', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        deleteStore(storeId).then(() => {
+        // eslint-disable-next-line no-eval
+        inputPattern: eval(`\/^${this.storeList[storeIndex].name}$\/`),
+        inputErrorMessage: '输入店铺名不匹配'
+      }).then(({ value }) => {
+        deleteStore(this.storeList[storeIndex].id).then(() => {
           this.fetchData()
         }).catch(err => {
           this.$message.error('删除失败')
