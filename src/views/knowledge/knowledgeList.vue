@@ -24,6 +24,10 @@
           <el-button type="primary" @click="downloadsCsv">导出知识点</el-button>
             <!--            <div slot="tip" class="el-upload__tip">只能上传csv文件，且不超过10MB</div>-->
         </el-col>
+        <el-col :span="9">
+          <el-button type="success" :loading="trainLoading" @click="trainModel" style="margin-left: 60px">{{ trainLoading ? "知识点训练中" : "知识点训练" }}</el-button>
+          <!--            <div slot="tip" class="el-upload__tip">只能上传csv文件，且不超过10MB</div>-->
+        </el-col>
       </el-row>
 
     </div>
@@ -189,7 +193,7 @@
 </template>
 
 <script>
-import { createKnowledge, deleteKnowledge, getKnowledgeList, updateKnowledge, exportCsv, importCsv } from '@/api/knowledge'
+import { createKnowledge, deleteKnowledge, getKnowledgeList, updateKnowledge, exportCsv, importCsv, trainModel } from '@/api/knowledge'
 import _ from 'lodash'
 import { mapGetters } from 'vuex'
 
@@ -242,7 +246,8 @@ export default {
         ]
       },
       knowledgeList: [],
-      fileList: []
+      fileList: [],
+      trainLoading: false
     }
   },
   computed: {
@@ -342,6 +347,7 @@ export default {
         params.search = this.searchInfo
       }
       getKnowledgeList(this.knowledgeBaseId, params).then(res => {
+        this.pagination.total = res.value.count
         res.value.results.map(item => {
           this.knowledgeList.push({
             id: item.id,
@@ -407,7 +413,17 @@ export default {
       })
     },
     downloadsCsv() {
-      exportCsv()
+      exportCsv(this.knowledgeBaseId)
+    },
+    trainModel() {
+      this.trainLoading = true
+      trainModel(this.knowledgeBaseId).then(() => {
+        this.$message.success('知识点训练完成')
+      }).catch((err) => {
+        console.log(err)
+      }).finally(() => {
+        this.trainLoading = false
+      })
     }
   }
 }

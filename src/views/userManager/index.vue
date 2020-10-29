@@ -292,6 +292,7 @@ export default {
         params.search = this.searchInfo
       }
       getUserList(params).then(res => {
+        this.pagination.total = res.value.count
         res.value.results.map(item => {
           this.userList.push({
             id: item.id,
