@@ -28,7 +28,7 @@ export function updateKnowledge(knowledgeBaseId, knowledgeItemId, data) {
 
 export function deleteKnowledge(knowledgeBaseId, knowledgeItemId) {
   return request({
-    url: '/api' + BASE_URL + `/${knowledgeBaseId}/knowledge_item/${knowledgeItemId}/`,
+    url: BASE_URL + `/${knowledgeBaseId}/knowledge_item/${knowledgeItemId}/`,
     method: 'delete'
   })
 }
