@@ -413,8 +413,19 @@ export default {
       })
     },
     downloadsCsv() {
-      exportCsv(this.knowledgeBaseId)
+      exportCsv(this.knowledgeBaseId).then((res) => {
+        const blob = new Blob([res], { type: 'application/octet-stream' })
+        const blobUrl = window.URL.createObjectURL(blob)
+        this.download(blobUrl)
+      })
     },
+    download(blobUrl) {
+      const a = document.createElement('a')
+      a.download = `知识库_${this.knowledgeBaseId}.csv`
+      a.href = blobUrl
+      a.click()
+    },
+
     trainModel() {
       this.trainLoading = true
       trainModel(this.knowledgeBaseId).then(() => {

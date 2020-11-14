@@ -34,12 +34,10 @@ export function deleteKnowledge(knowledgeBaseId, knowledgeItemId) {
 }
 
 export function exportCsv(knowledgeBaseId) {
-  const cur = window.document.location.href
-  const pathname = window.document.location.pathname
-  const pos = cur.indexOf(pathname)
-  const localhostPath = cur.substring(0, pos)
-  console.log(localhostPath + BASE_URL + `/${knowledgeBaseId}/knowledge_item/export_csv/`)
-  window.open(localhostPath + '/api' + BASE_URL + `/${knowledgeBaseId}/knowledge_item/export_csv/`, '_blank')
+  return request({
+    url: BASE_URL + `/${knowledgeBaseId}/knowledge_item/export_csv/`,
+    responseType: 'blob'
+  })
 }
 
 export function importCsv(knowledgeBaseId, data) {
